@@ -21,7 +21,21 @@ public class VehicleServiceImpl implements VehicleService {
     @Override
     public VehicleServiceResponseDto assignService(ServiceRequestDto request) {
         // Write your code here
+        VService vservice = new VService();
+        vservice.setServiceName(request.serviceName());
+        vservice.setCost(request.cost());
+        vservice.setVehicleType(request.vehicleType());
 
-        return null;
+        Employee employee = employeeRepository.findById(request.employeeId()).get();
+        vservice.setEmployee(employee);
+
+        VService savedService = vehicleServiceRepository.save(vservice);
+        VehicleServiceResponseDto vehicleServiceResponseDto = new VehicleServiceResponseDto(
+                savedService.getId(),
+                savedService.getServiceName(),
+                savedService.getCost(),
+                savedService.getVehicleType()
+        );
+        return vehicleServiceResponseDto;
     }
 }

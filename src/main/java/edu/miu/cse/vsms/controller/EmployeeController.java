@@ -4,6 +4,8 @@ import edu.miu.cse.vsms.dto.request.EmployeeRequestDto;
 import edu.miu.cse.vsms.dto.response.EmployeeResponseDto;
 import edu.miu.cse.vsms.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,24 +23,29 @@ public class EmployeeController {
     @PostMapping
     public ResponseEntity<EmployeeResponseDto> addEmployee(@RequestBody EmployeeRequestDto request) {
         // Write your code here
-
-        return null;
+        EmployeeResponseDto employeeResponseDto = employeeService.addEmployee(request);
+        if (employeeResponseDto != null) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(
+                    employeeResponseDto
+            );
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
     }
 
     // Get all employees
     @GetMapping
     public ResponseEntity<List<EmployeeResponseDto>> getAllEmployees() {
         // Write your code here
-
-        return null;
+        List<EmployeeResponseDto> employeeResponseDtos = employeeService.getAllEmployees();
+        return ResponseEntity.status(HttpStatus.OK).body(employeeResponseDtos);
     }
 
     // Get a specific employee by ID
     @GetMapping("/{id}")
     public ResponseEntity<EmployeeResponseDto> getEmployeeById(@PathVariable Long id) {
         // Write your code here
-
-        return null;
+        EmployeeResponseDto employeeResponseDto = employeeService.getEmployeeById(id);
+        return ResponseEntity.status(HttpStatus.OK).body(employeeResponseDto);
     }
 
     // Update partially an existing employee
@@ -48,7 +55,7 @@ public class EmployeeController {
             @RequestBody Map<String, Object> updates
     ) {
         // Write your code here
-
-        return null;
+        EmployeeResponseDto employeeResponseDto = employeeService.partiallyUpdateEmployee(id, updates);
+        return ResponseEntity.status(HttpStatus.OK).body(employeeResponseDto);
     }
 }

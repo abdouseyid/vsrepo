@@ -4,6 +4,7 @@ import edu.miu.cse.vsms.dto.request.ServiceRequestDto;
 import edu.miu.cse.vsms.dto.response.VehicleServiceResponseDto;
 import edu.miu.cse.vsms.service.VehicleService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,8 +22,13 @@ public class VehicleServiceController {
     @PostMapping
     public ResponseEntity<VehicleServiceResponseDto> assignService(@RequestBody ServiceRequestDto request) {
         // Write your code here
-
-        return null;
+        VehicleServiceResponseDto responseDto = vehicleService.assignService(request);
+        if (responseDto != null) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(
+                    responseDto
+            );
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
     
 }
